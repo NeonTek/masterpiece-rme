@@ -60,7 +60,7 @@ export default function DocumentGeneratorPage() {
   ) => {
     const newItems = [...items];
     const { name, value } = e.target;
-    (newItems[index] as Record<string, unknown>)[name] = [
+    (newItems[index] as unknown as Record<string, unknown>)[name] = [
       "quantity",
       "price",
       "amount",
