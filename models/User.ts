@@ -56,7 +56,7 @@ UserSchema.pre<IUser>("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     return next();
   } catch (error) {
-    return next(error);
+    return next(error as import("mongoose").CallbackError);
   }
 });
 
