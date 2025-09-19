@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const products = await Product.find({});
     return NextResponse.json({ success: true, data: products });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, message: "Server error" },
       { status: 500 }
@@ -46,10 +46,10 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const product = await Product.create(body);
     return NextResponse.json({ success: true, data: product }, { status: 201 });
-  } catch (err) {
+  } catch (error: any) {
     if (
-      error.name === "JsonWebTokenError" ||
-      error.name === "TokenExpiredError"
+      error?.name === "JsonWebTokenError" ||
+      error?.name === "TokenExpiredError"
     ) {
       return NextResponse.json(
         { message: "Authentication failed." },
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       );
     }
     return NextResponse.json(
-      { success: false, message: error.message },
+      { success: false, message: error?.message },
       { status: 400 }
     );
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 
 // Define types for our form data
 interface LineItem {
@@ -60,9 +60,11 @@ export default function DocumentGeneratorPage() {
   ) => {
     const newItems = [...items];
     const { name, value } = e.target;
-    (newItems[index] as any)[name] = ["quantity", "price", "amount"].includes(
-      name
-    )
+    (newItems[index] as Record<string, unknown>)[name] = [
+      "quantity",
+      "price",
+      "amount",
+    ].includes(name)
       ? parseFloat(value) || 0
       : value;
     setItems(newItems);
@@ -120,8 +122,12 @@ export default function DocumentGeneratorPage() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const pdfStream = await renderToStream(documentComponent);
+  const pdfStream = await renderToStream(documentComponent);
 
-    const response = new NextResponse(pdfStream as any);
+  const response = new NextResponse(pdfStream as unknown as BodyInit);
 
     response.headers.set("Content-Type", "application/pdf");
     response.headers.set(

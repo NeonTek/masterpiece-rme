@@ -106,6 +106,7 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
         {data.letterhead && (
           <Image
             src={data.letterhead}
+            // alt prop removed; not supported by @react-pdf/renderer
             style={{ width: "100%", height: "auto", marginBottom: 20 }}
           />
         )}
