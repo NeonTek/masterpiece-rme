@@ -39,8 +39,11 @@ export async function POST(req: NextRequest) {
     );
 
     return response;
-  } catch (error: any) {
-    console.error(error);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { message: err instanceof Error ? err.message : "Server error" },
+      { status: 500 }
+    );
   }
 }

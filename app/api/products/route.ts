@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const product = await Product.create(body);
     return NextResponse.json({ success: true, data: product }, { status: 201 });
-  } catch (error: any) {
+  } catch (err) {
     if (
       error.name === "JsonWebTokenError" ||
       error.name === "TokenExpiredError"

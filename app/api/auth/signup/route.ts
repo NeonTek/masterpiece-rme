@@ -63,13 +63,12 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     ); // 201 Created status
-  } catch (error: any) {
-    // Log the error for debugging and return a generic server error message
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "An unexpected error occurred.",
+        message: err instanceof Error ? err.message : "Server error",
       },
       { status: 500 }
     );
