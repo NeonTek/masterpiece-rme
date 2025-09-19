@@ -10,9 +10,10 @@ if (!MONGODB_URI) {
 
 // Augment the NodeJS global interface to add the mongoose property
 declare global {
+  // Use typeof import('mongoose') for correct type
   var mongoose: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
+    conn: typeof import("mongoose") | null;
+    promise: Promise<typeof import("mongoose")> | null;
   };
 }
 
@@ -32,9 +33,7 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI!, opts);
   }
 
   try {
