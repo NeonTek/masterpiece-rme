@@ -11,7 +11,7 @@ import {
 } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Roboto", fontSize: 10, padding: 30, color: "#333" },
+  page: { fontFamily: "Helvetica", fontSize: 10, padding: 30, color: "#333" },
   header: { textAlign: "center", marginBottom: 20 },
   headerTitle: { fontSize: 24, fontWeight: "bold" },
   headerSubtitle: { fontSize: 9, color: "#555" },
