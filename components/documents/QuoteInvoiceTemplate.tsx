@@ -9,11 +9,13 @@ import {
   Image,
 } from "@react-pdf/renderer";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 Font.register({
   family: "Roboto",
   fonts: [
-    { src: "/fonts/Roboto-Regular.ttf", fontWeight: "normal" },
-    { src: "/fonts/Roboto-Bold.ttf", fontWeight: "bold" },
+    { src: `${baseUrl}/fonts/Roboto-Regular.ttf`, fontWeight: "normal" },
+    { src: `${baseUrl}/fonts/Roboto-Bold.ttf`, fontWeight: "bold" },
   ],
 });
 
