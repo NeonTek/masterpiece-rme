@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Page,
@@ -5,21 +7,9 @@ import {
   View,
   Document,
   StyleSheet,
-  Font,
   Image,
 } from "@react-pdf/renderer";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-Font.register({
-  family: "Roboto",
-  fonts: [
-    { src: `${baseUrl}/fonts/Roboto-Regular.ttf`, fontWeight: "normal" },
-    { src: `${baseUrl}/fonts/Roboto-Bold.ttf`, fontWeight: "bold" },
-  ],
-});
-
-// --- A more detailed StyleSheet to match the mockups ---
 const styles = StyleSheet.create({
   page: { fontFamily: "Roboto", fontSize: 10, padding: 30, color: "#333" },
   header: { textAlign: "center", marginBottom: 20 },
@@ -102,15 +92,12 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {data.letterhead && (
+        {data.letterhead ? (
           <Image
             src={data.letterhead}
-            // alt prop removed; not supported by @react-pdf/renderer
             style={{ width: "100%", height: "auto", marginBottom: 20 }}
           />
-        )}
-
-        {!data.letterhead && (
+        ) : (
           <View style={styles.header}>
             <Text style={styles.headerTitle}>MASTERPIECE EMPIRE</Text>
             <Text style={styles.headerSubtitle}>

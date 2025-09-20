@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body || !body.docType) {
+    if (!body?.docType) {
       return NextResponse.json(
         { message: "Document type is required." },
         { status: 400 }
@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
 
     let documentComponent;
 
-    // Choose the component based on the docType from the form
     if (body.docType === "invoice" || body.docType === "quotation") {
       documentComponent = <QuoteInvoicePDF data={body} />;
     } else if (body.docType === "delivery") {
@@ -28,19 +27,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-  const pdfStream = await renderToStream(documentComponent);
+    // Render to stream
+    const pdfStream = await renderToStream(documentComponent);
 
-  const response = new NextResponse(pdfStream as unknown as BodyInit);
+    // Convert Node stream → Buffer
+    const chunks: Buffer[] = [];
+    for await (const chunk of pdfStream) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    }
+    const pdfBuffer = Buffer.concat(chunks);
 
-    response.headers.set("Content-Type", "application/pdf");
-    response.headers.set(
-      "Content-Disposition",
-      `attachment; filename="${body.docType}.pdf"`
-    );
-
-    return response;
+    // Return as NextResponse with ArrayBuffer
+    return new NextResponse(pdfBuffer, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${body.docType}.pdf"`,
+      },
+    });
   } catch (err) {
-    console.error(err);
+    console.error("PDF generation error:", err);
     return NextResponse.json(
       { message: err instanceof Error ? err.message : "Server error" },
       { status: 500 }
