@@ -8,7 +8,6 @@ export default function Header() {
         alt="Masterpiece Empire Header"
         width={1200}
         height={150}
-        unoptimized
       />
     </header>
   );
