@@ -12,11 +12,8 @@ import {
 Font.register({
   family: "Roboto",
   fonts: [
-    { src: `${process.cwd()}/public/fonts/Roboto-Regular.ttf` },
-    {
-      src: `${process.cwd()}/public/fonts/Roboto-Bold.ttf`,
-      fontWeight: "bold",
-    },
+    { src: "/fonts/Roboto-Regular.ttf", fontWeight: "normal" },
+    { src: "/fonts/Roboto-Bold.ttf", fontWeight: "bold" },
   ],
 });
 
