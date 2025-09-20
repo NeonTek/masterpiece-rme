@@ -5,23 +5,11 @@ import {
   View,
   Document,
   StyleSheet,
-  Font,
-  Image
+  Image,
 } from "@react-pdf/renderer";
 
-Font.register({
-  family: "Roboto",
-  fonts: [
-    { src: `${process.cwd()}/public/fonts/Roboto-Regular.ttf` },
-    {
-      src: `${process.cwd()}/public/fonts/Roboto-Bold.ttf`,
-      fontWeight: "bold",
-    },
-  ],
-});
-
 const styles = StyleSheet.create({
-  page: { fontFamily: "Roboto", fontSize: 10, padding: 30, color: "#333" },
+  page: { fontFamily: "Helvetica", fontSize: 10, padding: 30, color: "#333" },
   header: { textAlign: "center", marginBottom: 20 },
   headerTitle: { fontSize: 24, fontWeight: "bold" },
   headerSubtitle: { fontSize: 9, color: "#555" },
@@ -87,35 +75,30 @@ const styles = StyleSheet.create({
   signatureText: { fontSize: 8, color: "#444" },
 });
 
-// --- Props Interfaces ---
 interface LineItem {
   name: string;
-  description: string;
+  description?: string;
   quantity: number;
   units: string;
 }
 interface TemplateData {
   customer: { name: string; email: string; phone: string };
   items: LineItem[];
-  letterhead: string | null;
+  letterhead?: string | null;
 }
 
-// --- The Delivery Note PDF Component ---
 export const DeliveryNotePDF = ({ data }: { data: TemplateData }) => {
   const deliveryCode = `MMM${Date.now().toString().slice(-6)}DELV`;
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {data.letterhead && (
+        {data.letterhead ? (
           <Image
             src={data.letterhead}
-            // alt prop removed; not supported by @react-pdf/renderer
             style={{ width: "100%", height: "auto", marginBottom: 20 }}
           />
-        )}
-
-        {!data.letterhead && (
+        ) : (
           <View style={styles.header}>
             <Text style={styles.headerTitle}>MASTERPIECE EMPIRE</Text>
             <Text style={styles.headerSubtitle}>
@@ -125,11 +108,11 @@ export const DeliveryNotePDF = ({ data }: { data: TemplateData }) => {
         )}
 
         <View style={styles.customerInfo}>
-          <Text style={styles.customerText}>
+          <Text>
             <Text style={styles.boldText}>CUSTOMER NAME:</Text>{" "}
             {data.customer.name}
           </Text>
-          <Text style={styles.customerText}>
+          <Text>
             <Text style={styles.boldText}>Email:</Text> {data.customer.email}{" "}
             <Text style={styles.boldText}> Phone Nos:</Text>{" "}
             {data.customer.phone}
@@ -140,6 +123,7 @@ export const DeliveryNotePDF = ({ data }: { data: TemplateData }) => {
           <Text>DELIVERY CODE : {deliveryCode}</Text>
         </View>
 
+        {/* Table */}
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <View style={{ ...styles.tableColHeader, width: "10%" }}>
@@ -158,6 +142,7 @@ export const DeliveryNotePDF = ({ data }: { data: TemplateData }) => {
               <Text style={styles.tableCellHeader}>QUANTITY</Text>
             </View>
           </View>
+
           {data.items.map((item, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={{ ...styles.tableCol, width: "10%" }}>
@@ -181,7 +166,7 @@ export const DeliveryNotePDF = ({ data }: { data: TemplateData }) => {
           ))}
         </View>
 
-        {/* Footer with Signature lines */}
+        {/* Footer with Signatures */}
         <View style={styles.footerContainer}>
           <View style={styles.signatureBlock}>
             <Text style={styles.boldText}>DELIVERED BY</Text>

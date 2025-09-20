@@ -1,5 +1,4 @@
-"use client";
-
+// 🚫 Remove "use client" – PDF components must run on the server
 import React from "react";
 import {
   Page,
@@ -15,7 +14,6 @@ const styles = StyleSheet.create({
   header: { textAlign: "center", marginBottom: 20 },
   headerTitle: { fontSize: 24, fontWeight: "bold" },
   headerSubtitle: { fontSize: 9, color: "#555" },
-  section: { marginBottom: 15 },
   sectionHeader: {
     backgroundColor: "#E5E7EB",
     padding: 5,
@@ -79,7 +77,7 @@ interface LineItem {
 interface TemplateData {
   customer: { name: string; email: string; phone: string };
   items: LineItem[];
-  letterhead: string | null;
+  letterhead?: string | null;
 }
 
 export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
@@ -107,11 +105,11 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
         )}
 
         <View style={styles.customerInfo}>
-          <Text style={styles.customerText}>
+          <Text>
             <Text style={styles.boldText}>CUSTOMER NAME:</Text>{" "}
             {data.customer.name}
           </Text>
-          <Text style={styles.customerText}>
+          <Text>
             <Text style={styles.boldText}>Email:</Text> {data.customer.email}{" "}
             <Text style={styles.boldText}> Phone Nos:</Text>{" "}
             {data.customer.phone}
@@ -122,6 +120,7 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
           <Text>INVOICE CODE : {invoiceCode}</Text>
         </View>
 
+        {/* Table */}
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <View style={{ ...styles.tableColHeader, width: "45%" }}>
@@ -149,6 +148,7 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
               <Text style={styles.tableCellHeader}>TOTAL</Text>
             </View>
           </View>
+
           {data.items.map((item, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={{ ...styles.tableCol, width: "45%" }}>
@@ -179,7 +179,8 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
               </View>
             </View>
           ))}
-          <View style={{ ...styles.tableRow }}>
+
+          <View style={styles.tableRow}>
             <View
               style={{ ...styles.tableCol, width: "80%", ...styles.textRight }}
             >
@@ -193,10 +194,11 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
           </View>
         </View>
 
+        {/* Footer */}
         <View style={styles.footerSection}>
           <Text style={styles.boldText}>PAYMENT DETAILS</Text>
           <Text>
-            PAY TO TILL: buy goods Till no. 4189906 (Masterpiece Empire)
+            PAY TO TILL: Buy goods Till no. 4189906 (Masterpiece Empire)
           </Text>
           <Text>
             PAY TO BANK: StanBic Bank, Kenyatta Avenue, A/C 0100010297553
@@ -206,12 +208,10 @@ export const QuoteInvoicePDF = ({ data }: { data: TemplateData }) => {
         <View style={styles.terms}>
           <Text style={styles.boldText}>TERMS:</Text>
           <Text>
-            This Quotation is valid for utmost 7days after date of issue.
+            This Quotation is valid for utmost 7 days after date of issue.
           </Text>
-          <Text>VAT is applied where/when Applicable</Text>
-          <Text>
-            Make payments to either of the two Options mentioned above ONLY.
-          </Text>
+          <Text>VAT is applied where/when applicable</Text>
+          <Text>Make payments to either of the two options above ONLY.</Text>
         </View>
       </Page>
     </Document>
